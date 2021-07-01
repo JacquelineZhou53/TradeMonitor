@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TradeMonitor",
-    "slug": "TradeMonitor",
+    "name": "my-expo-project",
+    "slug": "my-expo-project",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,0 +1,7 @@
+You need a little more practice with laying out components and specifying their alignment..
+
+The text "These three buttons, ." should be on its own line, and the last two lines should be centered.
+
+Also, you mistakenly included a second app when you cut and pasted in your code.
+
+You defined a Header component, but didn't use it, so the Quiz 1 text was normal sized.
