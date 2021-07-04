@@ -2,16 +2,15 @@ import React, { useState, useEffect }  from 'react';
 import { SafeAreaView, ScrollView, View, Button,
          FlatList, StyleSheet, Text, TextInput, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DateTimePicker from '@react-native-community/datetimepicker';
+//import DateTimePicker from '@react-native-community/datetimepicker';
 
 const StockList = (props) => {
-  const [stock,setStock]           = useState({index: "", time:"", price:0, share:0, actionType:""});
   const [index, setIndex]          = useState("");
   const [time,setTime]             = useState("");
-  const [price,setPrice]           = useState(0);
-  const [share,setShare]           = useState(0);
+  const [price,setPrice]           = useState("");
+  const [share,setShare]           = useState("");
   const [actionType,setActionType] = useState("");
-  const [stockOp, setStockOp]      = useState([]);
+  const [stocklist, setStocklist]      = useState([]);
 
   useEffect(() => {getData()}
            ,[])
@@ -19,24 +18,19 @@ const StockList = (props) => {
   const getData = async () => {
         try {
           // the '@profile_info' can be any string
-          const jsonValue = await AsyncStorage.getItem('@stock_list')
+          const jsonValue = await AsyncStorage.getItem('@stocklist')
           let data = null
           if (jsonValue!=null) {
             data = JSON.parse(jsonValue)
-            setStock(data)
-            setIndex(data.index)
-            setTime(data.time)
-            setPrice(data.price)
-            setShare(data.share)
-            setActionType(data.actionType)
+            setStocklist(data)
             console.log('just set Info, Name and Email')
           } else {
             console.log('just read a null value from Storage')
-            setStock({})
+            setStocklist([])
             setIndex("")
             setTime("")
-            setPrice(0)
-            setShare(0)
+            setPrice("")
+            setShare("")
             setActionType("")
           }
 
@@ -51,7 +45,7 @@ const StockList = (props) => {
   const storeData = async (value) => {
         try {
           const jsonValue = JSON.stringify(value)
-          await AsyncStorage.setItem('@stock_list', jsonValue)
+          await AsyncStorage.setItem('@stocklist', jsonValue)
           console.log('just stored '+jsonValue)
         } catch (e) {
           console.log("error in storeData ")
@@ -74,14 +68,12 @@ const StockList = (props) => {
 
   const renderStockItem = ({item}) => {
     return (
-      <View style={{border:'thin solid red'}}>
-        <Text style={styles.stockItem}>
+      <View style={styles.stocklist}>
            <Text> Stock Index: {item.index} </Text>
            <Text> Time of operation: {item.time} </Text>
            <Text> Price: {item.price} </Text>
            <Text> Share: {item.share} </Text>
            <Text> Operation type: {item.actionType} </Text>
-        </Text>
       </View>
     )
   }
@@ -108,67 +100,118 @@ const StockList = (props) => {
          ActionType is ({actionType})
       </Text>
       <Text>
-         Stock Operations are {JSON.stringify(stockOp)}
+         Stock Operations are {JSON.stringify(stocklist)}
       </Text>
   </View>);
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}> Stock Holdings List </Text>
-      <View>
-        <TextInput
-          style={{height: 20}}
-          placeholder="Enter stock index"
-          onChangeText={text => {
-               setIndex(text);
-             }}
-          value = {index}
-        />
-      </View>
-      <View>
-        <TextInput
-          style={{height: 20}}
-          placeholder="Enter share number"
-          onChangeText={text => {
-               setDueDate(text);
-             }}
-          value = {time}
-        />
-      </View>
-      <View>
-        <TextInput
-          style={{height: 20}}
-          placeholder="Enter comment"
-          onChangeText={text => {
-               setComment(text);
-             }}
-          value = {comment}
-        />
-      </View>
-      <View>
-        <Button
-           title={"add"}
-           color="blue"
-           onPress = {() => {
-             const newToDoItems =
-               todoItems.concat(
-                 {'todo':todo,
-                 'dueDate':dueDate,
-                 'comment':comment,
-                 'date':new Date()
-               })
-             setToDoItems(newStockItems)
-             storeData(newToDoItems)
-             setTodo("")
-             setDueDate("")
-             setComment("")
-           }}
-           />
+      <View style={{flexDirection:'col'}}>
+          <View>
+            <TextInput
+              style={{height: 20}}
+              placeholder="Enter stock index"
+              onChangeText={text => {
+                   setIndex(text);
+                 }}
+              value = {index}
+            />
+          </View>
+          <View>
+            <TextInput
+              style={{height: 20}}
+              placeholder="Enter date of operation"
+              onChangeText={text => {
+                   setTime(text);
+                 }}
+              value = {time}
+            />
+          </View>
+          <View>
+            <TextInput
+              style={{height: 20}}
+              placeholder="Enter price at operation"
+              onChangeText={text => {
+                   setPrice(parseFloat(text));
+                 }}
+              value = {price}
+            />
+          </View>
+          <View>
+            <TextInput
+              style={{height: 20}}
+              placeholder="Enter share at operation"
+              onChangeText={text => {
+                   setShare(parseInt(text));
+                 }}
+              value = {share}
+            />
+          </View>
+
+          <View>
+            <Button
+               title={"Buy"}
+               color="green"
+               onPress = {() => {
+                 setActionType("Buy")
+                 const newStockOp =
+                   stocklist.concat(
+                     {'index':index,
+                     'time':time,
+                     'price':price,
+                     'share':share,
+                     'actionType':"Buy",
+                   })
+                 setStocklist(newStockOp)
+                 storeData(newStockOp)
+                 setIndex("")
+                 setTime("")
+                 setPrice("")
+                 setShare("")
+                 setActionType("")
+               }}
+            />
+          </View>
+          <View>
+            <Button
+               title={"Sell"}
+               color="orange"
+               onPress = {() => {
+                 setActionType("Sell")
+                 const newStockOp =
+                   stocklist.concat(
+                     {'index':index,
+                     'time':time,
+                     'price':price,
+                     'share':share,
+                     'actionType':"Sell",
+                   })
+                 setStocklist(newStockOp)
+                 storeData(newStockOp)
+                 setIndex("")
+                 setTime("")
+                 setPrice("")
+                 setShare("")
+                 setActionType("")
+               }}
+            />
+          </View>
+          <View>
+            <Button
+                    title={"clear logs"}
+                    color="red"
+                    onPress = {() => {
+                      clearAll()
+                      setStocklist([])
+                    }}
+            />
+          </View>
       </View>
       <FlatList
-        data={todoItems}
-        renderItem={renderTodoItem}
-        keyExtractor={item => item.date}
+        data={stocklist}
+        renderItem={renderStockItem}
+        keyExtractor={item => item.time + item.index + String(item.share) + String(item.price)}
       />
       {debug?debugView: <Text>""</Text>}
     </View>
@@ -185,15 +228,14 @@ const styles = StyleSheet.create({
     marginTop:20,
     padding:20,
   },
-  todoItem:{
+  stocklist:{
     justifyContent:'center',
+    flexDirection:'row',
+    fontSize: 26,
   },
   headerText: {
     textAlign:'center',
-    backgroundColor:'#aaa',
-    fontSize: 16,
-    padding:10,
-    color: 'blue'
+    fontSize:26,
   },
 
 });

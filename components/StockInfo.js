@@ -3,6 +3,24 @@ import { SafeAreaView, ScrollView, View, Button,
          FlatList, StyleSheet, Text, TextInput, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+/*
+var MongoClient = require('mongodb').MongoClient;
+
+MongoClient.connect("mongodb+srv://JacquelineZhou53:<password>@cluster0.umfnn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", function(err, db){
+  if(err){
+    console.log("Had error connecting");
+  }
+  db.collection('stockprops', function (err, collection){
+      collection.find().toArray(function(err, items){
+        if(err){
+          console.log("Had error fetching collection");
+        }
+        console.log(items);
+      });
+  });
+});
+*/
+
 const StockInfo = (props) => {
   <View>
 
