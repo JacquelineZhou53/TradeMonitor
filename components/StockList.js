@@ -69,11 +69,11 @@ const StockList = (props) => {
   const renderStockItem = ({item}) => {
     return (
       <View style={styles.stocklist}>
-           <Text> Stock Index: {item.index} </Text>
-           <Text> Time of operation: {item.time} </Text>
-           <Text> Price: {item.price} </Text>
-           <Text> Share: {item.share} </Text>
-           <Text> Operation type: {item.actionType} </Text>
+           <Text style={styles.itemText}> Stock Index: {item.index} </Text>
+           <Text style={styles.itemText}> Time of operation: {item.time} </Text>
+           <Text style={styles.itemText}> Price: {item.price} </Text>
+           <Text style={styles.itemText}> Share: {item.share} </Text>
+           <Text style={styles.itemText}> Operation type: {item.actionType} </Text>
       </View>
     )
   }
@@ -229,9 +229,11 @@ const styles = StyleSheet.create({
     padding:20,
   },
   stocklist:{
-    justifyContent:'center',
+    justifyContent:'left',
     flexDirection:'row',
-    fontSize: 26,
+  },
+  itemText:{
+    fontSize:26,
   },
   headerText: {
     textAlign:'center',
